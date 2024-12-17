@@ -1,0 +1,36 @@
+@model List<Kuafor>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Landing Page</title>
+    </head>
+    <body>
+        <p>
+            <a href="/Home/Login">
+                <button>Login</button>
+            </a>
+            <a href="/Home/Register">
+                <button>Register</button>
+            </a>
+        </p>
+        <h1>Kuaforler</h1>
+        <table border="1"body>
+            <thread>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                </tr>
+            </thread>
+            <tbody>
+                @foreach (var kuafor in Model)
+                {
+                    <tr>
+                        <td>@kuafor.id</td>
+                        <td>@kuafor.name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </body>
+</html>
