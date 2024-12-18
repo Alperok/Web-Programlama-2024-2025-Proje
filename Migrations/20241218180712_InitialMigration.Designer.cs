@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KuaforProg.Migrations
 {
     [DbContext(typeof(KuaforPostgressContext))]
-    [Migration("20241126200335_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241218180712_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,18 +25,40 @@ namespace KuaforProg.Migrations
 
             modelBuilder.Entity("Kuafor", b =>
                 {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+
+                    b.Property<string>("name")
+                        .HasColumnType("text");
+
+                    b.HasKey("id");
+
+                    b.ToTable("kuaforListe");
+                });
+
+            modelBuilder.Entity("User", b =>
+                {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("KuaforListe");
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }
