@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-public class KuaforPostgressContext : DbContext
+public class KuaforPostgressContext : IdentityDbContext
 {
     public KuaforPostgressContext(DbContextOptions<KuaforPostgressContext> options) : base(options) { }
     public DbSet<Kuafor> kuaforListe { get; set; }

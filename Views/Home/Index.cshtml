@@ -7,15 +7,12 @@
     </head>
     <body>
         <p>
-            @if(!(bool)ViewBag.IsLoggedIn)
-            {
-                <a href="/Home/Login">
-                    <button>Login</button>
-                </a>
-                <a href="/Home/Register">
-                    <button>Register</button>
-                </a>
-            }
+            <form asp-controller="Account" asp-action="Login" method="get">
+                <button type="submit">Login</button>
+            </form>
+            <form asp-controller="Account" asp-action="Register" method="get">
+                <button type="submit">Register</button>
+            </form>
         </p>
         <h1>Kuaforler</h1>
         <table border="1"body>
