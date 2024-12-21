@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,12 +43,20 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Register(string username, string email, string password)
     {
-        var user = new IdentityUser {UserName = username, Email = email};
+        var user = new IdentityUser
+        {
+            UserName = username,
+            Email = email
+        };
+        
         var result = await _userManager.CreateAsync(user, password);
 
         if(result.Succeeded)
         {
-            return RedirectToAction("Login");
+            await _userManager.AddToRoleAsync(user, "RegisteredUser");
+
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            return RedirectToAction("Index", "Home");
         }
 
         foreach(var error in result.Errors)
@@ -56,5 +65,14 @@ public class AccountController : Controller
         }
 
         return View();
+    }
+
+    [HttpPost]
+    [Authorize]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("Index", "Home");
     }
 }

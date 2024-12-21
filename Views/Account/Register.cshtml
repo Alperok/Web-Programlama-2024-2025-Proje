@@ -3,7 +3,18 @@
 }
 
 <h1>Register Page</h1>
-<form method="post">
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <ul>
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <li>@error.ErrorMessage</li>
+        }
+    </ul>
+}
+
+<form asp-controller="Account" asp-action="Register" method="post">
     <div>
         <label for="username">Username</label>
         <input type="text" id="username" name="username" />

@@ -1,4 +1,7 @@
-@model List<Kuafor>
+@model List<Barber>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
 
 <!DOCTYPE html>
 <html>
@@ -7,30 +10,41 @@
     </head>
     <body>
         <p>
-            <form asp-controller="Account" asp-action="Login" method="get">
-                <button type="submit">Login</button>
-            </form>
-            <form asp-controller="Account" asp-action="Register" method="get">
-                <button type="submit">Register</button>
-            </form>
-        </p>
-        <h1>Kuaforler</h1>
-        <table border="1"body>
-            <thread>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                </tr>
-            </thread>
-            <tbody>
-                @foreach (var kuafor in Model)
+            @if (SignInManager.IsSignedIn(User))
+            {
+                if (User.IsInRole("Admin"))
                 {
-                    <tr>
-                        <td>@kuafor.id</td>
-                        <td>@kuafor.name</td>
-                    </tr>
+                    <form asp-controller="Account" asp-action="AdminDashboard" method="post">
+                        <button type="submit">Admin Dashboard</button>
+                    </form>
                 }
-            </tbody>
-        </table>
+
+                if (User.IsInRole("RegisteredUser"))
+                {
+                    <form asp-controller="Account" asp-action="MyProfile" method="post">
+                        <button type="submit">My Profile</button>
+                    </form>
+                }
+
+                <form asp-controller="Account" asp-action="Logout" method="post">
+                    <button type="submit">Logout</button>
+                </form>
+
+            }
+            else
+            {
+                <a href="/Account/Login">Login</a>
+                <a href="/Account/Register">Register</a>
+            }
+        </p>
+        
+        <h1>Berberler</h1>
+
+        <div class="container mt-4">
+            @foreach (var barber in Model)
+            {
+                <partial name="_BarberCard" model="barber" />
+            }
+        </div>
     </body>
 </html>
