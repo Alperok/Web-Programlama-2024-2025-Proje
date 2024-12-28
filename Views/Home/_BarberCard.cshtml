@@ -12,9 +12,6 @@
                     <p class="card-text"><strong>Location:</strong> @Model.VerbalLocation</p>
                     <p class="card-text"><strong>Phone:</strong> @Model.PhoneNumber</p>
                     <p class="card-text">
-                        <strong>Services:</strong> @string.Join(", ", Model.Services)
-                    </p>
-                    <p class="card-text">
                         <strong>Opening Hours:</strong> @Model.OpeningHour.ToShortTimeString() - @Model.ClosingHour.ToShortTimeString()
                     </p>
                     <div>

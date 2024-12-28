@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KuaforProg.Migrations
 {
     [DbContext(typeof(KuaforPostgressContext))]
-    partial class KuaforPostgressContextModelSnapshot : ModelSnapshot
+    [Migration("20241228084136_AddPersonelTable")]
+    partial class AddPersonelTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,6 +51,9 @@ namespace KuaforProg.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
+                    b.PrimitiveCollection<List<string>>("Services")
+                        .HasColumnType("text[]");
+
                     b.Property<string>("ThumbnailUrl")
                         .HasColumnType("text");
 
@@ -60,39 +66,6 @@ namespace KuaforProg.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Barbers");
-                });
-
-            modelBuilder.Entity("BarberService", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BarberId")
-                        .HasColumnType("integer");
-
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("interval");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("PersonelId")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BarberId");
-
-                    b.HasIndex("PersonelId");
-
-                    b.ToTable("BarberServices");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -299,6 +272,9 @@ namespace KuaforProg.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Abilities")
+                        .HasColumnType("text");
+
                     b.Property<int>("BarberId")
                         .HasColumnType("integer");
 
@@ -306,84 +282,14 @@ namespace KuaforProg.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Speciality")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BarberId");
 
                     b.ToTable("Personel");
-                });
-
-            modelBuilder.Entity("PersonelService", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BarberServiceId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PersonelId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BarberServiceId");
-
-                    b.HasIndex("PersonelId");
-
-                    b.ToTable("PersonelServices");
-                });
-
-            modelBuilder.Entity("Randevu", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BarberServiceId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PersonelId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BarberServiceId");
-
-                    b.HasIndex("PersonelId");
-
-                    b.ToTable("Randevu");
-                });
-
-            modelBuilder.Entity("BarberService", b =>
-                {
-                    b.HasOne("Barber", "Barber")
-                        .WithMany()
-                        .HasForeignKey("BarberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Personel", null)
-                        .WithMany("Services")
-                        .HasForeignKey("PersonelId");
-
-                    b.Navigation("Barber");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -448,48 +354,9 @@ namespace KuaforProg.Migrations
                     b.Navigation("Barber");
                 });
 
-            modelBuilder.Entity("PersonelService", b =>
-                {
-                    b.HasOne("BarberService", "BarberService")
-                        .WithMany()
-                        .HasForeignKey("BarberServiceId");
-
-                    b.HasOne("Personel", "Personel")
-                        .WithMany()
-                        .HasForeignKey("PersonelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BarberService");
-
-                    b.Navigation("Personel");
-                });
-
-            modelBuilder.Entity("Randevu", b =>
-                {
-                    b.HasOne("BarberService", "BarberService")
-                        .WithMany()
-                        .HasForeignKey("BarberServiceId");
-
-                    b.HasOne("Personel", "Personel")
-                        .WithMany()
-                        .HasForeignKey("PersonelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BarberService");
-
-                    b.Navigation("Personel");
-                });
-
             modelBuilder.Entity("Barber", b =>
                 {
                     b.Navigation("PersonelList");
-                });
-
-            modelBuilder.Entity("Personel", b =>
-                {
-                    b.Navigation("Services");
                 });
 #pragma warning restore 612, 618
         }

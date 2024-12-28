@@ -15,7 +15,7 @@ public class Barber
     public TimeOnly OpeningHour { get; set; }
     public TimeOnly ClosingHour { get; set; }
 
-    public List<string> Services { get; set; } = new List<string>();
-
     public string ThumbnailUrl { get; set; }
+
+    public ICollection<Personel> PersonelList {get; set;} = new List<Personel>();
 }

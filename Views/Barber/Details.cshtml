@@ -1,0 +1,59 @@
+@model Barber
+
+@{
+    ViewData["Title"] = "Barber Details";
+}
+
+<div class="container mt-5">
+    <div class="card mb-4" style="max-width: 900px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="@Model.ThumbnailUrl" alt="@Model.Name" class="img-fluid rounded-start" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h1 class="card-title">@Model.Name</h1>
+                    <p class="card-text"><strong>Location:</strong> @Model.VerbalLocation</p>
+                    <p class="card-text"><strong>Latitude:</strong> @Model.Latitude</p>
+                    <p class="card-text"><strong>Longitude:</strong> @Model.Longtitude</p>
+                    <p class="card-text"><strong>Phone:</strong> @Model.PhoneNumber</p>
+                    
+                    <p><strong>Opening Hours:</strong> @Model.OpeningHour.ToShortTimeString() - @Model.ClosingHour.ToShortTimeString()</p>
+
+                    <h2>Personnel</h2>
+                    <ul>
+                        @foreach (var personel in Model.PersonelList)
+                        {
+                            <li>
+                                @personel.Name
+                                @if (personel.Services.Any())
+                                {
+                                    <span>(
+                                        @string.Join(", ", personel.Services.Select(s => s.Name))
+                                    )</span>
+                                }
+                                else
+                                {
+                                    <span>(No services listed)</span>
+                                }
+                            </li>
+                        }
+                    </ul>
+
+
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary mt-4">Back to Home</a>
+
+                    <p><strong>Websites:</strong></p>
+                    @foreach (var website in Model.Websites)
+                    {
+                        <a href="@website" target="_blank" class="btn btn-outline-primary btn-sm me-2">@website</a>
+                    }
+
+                    <div class="mt-4">
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Back to Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

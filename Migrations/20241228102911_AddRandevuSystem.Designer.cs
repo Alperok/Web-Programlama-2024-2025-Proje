@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KuaforProg.Migrations
 {
     [DbContext(typeof(KuaforPostgressContext))]
-    partial class KuaforPostgressContextModelSnapshot : ModelSnapshot
+    [Migration("20241228102911_AddRandevuSystem")]
+    partial class AddRandevuSystem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,17 +83,12 @@ namespace KuaforProg.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("PersonelId")
-                        .HasColumnType("integer");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BarberId");
-
-                    b.HasIndex("PersonelId");
 
                     b.ToTable("BarberServices");
                 });
@@ -379,10 +377,6 @@ namespace KuaforProg.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Personel", null)
-                        .WithMany("Services")
-                        .HasForeignKey("PersonelId");
-
                     b.Navigation("Barber");
                 });
 
@@ -485,11 +479,6 @@ namespace KuaforProg.Migrations
             modelBuilder.Entity("Barber", b =>
                 {
                     b.Navigation("PersonelList");
-                });
-
-            modelBuilder.Entity("Personel", b =>
-                {
-                    b.Navigation("Services");
                 });
 #pragma warning restore 612, 618
         }
